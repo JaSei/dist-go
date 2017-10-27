@@ -1,0 +1,11 @@
+[[constraint]]
+  name = "github.com/alecthomas/kingpin"
+  version = "2.2.5"
+
+[[constraint]]
+  name = "github.com/JaSei/pathutil-go"
+  branch = "implementation"
+
+[[constraint]]
+  name = "github.com/pkg/errors"
+  version = "0.8.0"
