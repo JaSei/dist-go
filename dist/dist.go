@@ -44,7 +44,7 @@ func GoGet(repo string) error {
 func Run(command string, commandArgs ...string) error {
 	cmd := exec.Command(command, commandArgs...)
 	if err := cmd.Run(); err != nil {
-		return errors.Wrap(err, command)
+		return errors.Wrap(err, "Run")
 	}
 
 	return nil

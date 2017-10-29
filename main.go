@@ -7,6 +7,8 @@ dist-go has a bold assumption and convention like the followings:
 * Your project have tests and is tested in travis (and appveyour)
 * README.md is generated from godoc (no more doc duplicity/mismatch)
 * Your app project is released to github releases
+* vendor dir is gitignored (vendor isn't commited - https://github.com/golang/dep/blob/master/docs/FAQ.md#should-i-commit-my-vendor-directory)
+* `-go` suffix in project name is ignored (package called without `-go` suffix)
 
 SYNOPSIS
 
@@ -15,6 +17,10 @@ SYNOPSIS
 	# chdir $(dist-go pd NewLibrary)
 	dist-go test
 	dist-go release
+
+	ls -al $(dist-go pd github.com/JaSei/test-go)
+	rm -rf $(dist-go pd github.com/JaSei/test-go)
+
 
 new
 

@@ -1,7 +1,11 @@
 package dist
 
 func Test() error {
-	//project := LoadProject()
+	project, err := LoadCwdProject()
+	if err != nil {
+		return err
+	}
+	_ = project.Path()
 	//project.GenerateReadme()
 	//project.DepEnsure()
 	//project.GoTestCover()
