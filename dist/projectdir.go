@@ -3,6 +3,7 @@ package dist
 import (
 	"fmt"
 
+	"github.com/JaSei/dist-go/utils"
 	"github.com/JaSei/pathutil-go"
 	"github.com/pkg/errors"
 )
@@ -10,7 +11,7 @@ import (
 type projectMapper map[string][]pathutil.Path
 
 func PrintProjectDirectory(projectName string) error {
-	path, err := ProjectPath(projectName)
+	path, err := utils.ProjectPath(projectName)
 
 	if err != nil {
 		errors.Wrap(err, "PrintProjectDirectory failed")
@@ -43,7 +44,7 @@ func PrintProjectDirectory(projectName string) error {
 }
 
 func findProject() (projectMapper, error) {
-	srcPath, err := GoSrcPath()
+	srcPath, err := utils.GoSrcPath()
 	if err != nil {
 		return nil, err
 	}

@@ -7,6 +7,7 @@ dist-go has a bold assumption and convention like the followings:
 * Your project have tests and is tested in travis (and appveyour)
 * README.md is generated from godoc (no more doc duplicity/mismatch)
 * Your app project is released to github releases
+* VCS are git only (yet)
 * vendor dir is gitignored (vendor isn't commited - https://github.com/golang/dep/blob/master/docs/FAQ.md#should-i-commit-my-vendor-directory)
 * `-go` suffix in project name is ignored (package called without `-go` suffix)
 
@@ -71,22 +72,28 @@ import (
 
 var (
 	new               = kingpin.Command("new", "create new repo")
+	newLicence        = new.Flag("licence", "licence").Default("mit").String()
+	newAuthor         = new.Flag("author", "author").Default("Jan Seidl").String()
 	newLib            = new.Command("lib", "create new library repo")
 	newLibProjectName = newLib.Arg("project", "project name (eg. github.com/JaSei/test-go").Required().String()
 	newApp            = new.Command("app", "create new application repo")
+	newAppProjectName = newApp.Arg("project", "project name (eg. github.com/JaSei/test-go").Required().String()
 
 	pd            = kingpin.Command("projectDir", "get project directory").Alias("pd")
 	pdProjectName = pd.Arg("project", "project name (eg. github.com/JaSei/test-go or JaSei/test-go or test-go)").Required().String()
 
 	test = kingpin.Command("test", "run test(s)")
 
-	release = kingpin.Command("release", "release new version")
+	release              = kingpin.Command("release", "release new version")
+	releaseToGitHub      = release.Command("github", "release new version to github")
+	releaseToArtifactory = release.Command("artifactory", "release new version to generic artifactory")
+	releaseToDir         = release.Command("dir", "release new version to directory")
 )
 
 func main() {
 	switch kingpin.Parse() {
 	case newLib.FullCommand():
-		handleError(dist.NewLib(*newLibProjectName))
+		handleError(dist.NewLib(*newLibProjectName, *newAuthor, *newLicence))
 	case newApp.FullCommand():
 		handleError(dist.NewApp())
 	case pd.FullCommand():

@@ -1,14 +1,18 @@
 package dist
 
+import (
+	"github.com/JaSei/dist-go/project"
+)
+
 func Test() error {
-	project, err := LoadCwdProject()
+	proj, err := project.LoadCwdProject()
 	if err != nil {
 		return err
 	}
-	_ = project.Path()
-	//project.GenerateReadme()
-	//project.DepEnsure()
-	//project.GoTestCover()
+	_ = proj.Path()
+	//proj.GenerateReadme()
+	//proj.DepEnsure()
+	//proj.GoTestCover()
 
 	return nil
 }
