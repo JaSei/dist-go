@@ -18,6 +18,8 @@ type Project interface {
 	MakeDepFiles() error
 	CheckIntegrity() error
 	MakeLicenseFile() error
+	SaveConfig() error
+	LoadConfig() error
 }
 
 // implementation
@@ -63,16 +65,19 @@ func LoadCwdProject() (Project, error) {
 		return nil, errors.Errorf("You arn't in GOPATH/src directory")
 	}
 
-	loadedAuthor := "Jan Seidl"
-	loadedLicense := "mit"
-
-	return LoadProject(strings.TrimPrefix(cwd.String(), goSrc.String()), loadedAuthor, loadedLicense)
+	return LoadProject(strings.TrimPrefix(cwd.String(), goSrc.String()), "", "")
 }
 
 func LoadProject(projectName, author, license string) (Project, error) {
 	project, err := newProject(projectName, author, license)
 	if err != nil {
 		return nil, errors.Wrap(err, "LoadProject")
+	}
+
+	if author == "" && license == "" {
+		if err = project.LoadConfig(); err != nil {
+			return nil, errors.Wrap(err, "LoadProject")
+		}
 	}
 
 	if err = project.CheckIntegrity(); err != nil {
@@ -97,7 +102,7 @@ func newProject(projectName, author, license string) (Project, error) {
 		return nil, errors.Wrapf(err, "Project(%s) fail", projectName)
 	}
 
-	return project{path: projectPath, gpp: gpp, author: author, license: license}, nil
+	return &project{path: projectPath, gpp: gpp, author: author, license: license}, nil
 }
 
 func (project project) Path() pathutil.Path {
@@ -108,12 +113,21 @@ func (project project) CheckIntegrity() error {
 	shouldBeExistsPaths := []pathutil.Path{
 		project.versionFilePath(),
 		project.depGopkgTomlPath(),
+		project.distGoTomlPath(),
 	}
 
 	for _, path := range shouldBeExistsPaths {
 		if !path.Exists() {
 			return errors.Errorf("No exists %s", path)
 		}
+	}
+
+	if project.author == "" {
+		return errors.Errorf("Author isn't set")
+	}
+
+	if project.license == "" {
+		return errors.Errorf("License isn't set")
 	}
 
 	return nil
@@ -140,5 +154,11 @@ func (project project) depGopkgTomlPath() pathutil.Path {
 func (project project) licensePath() pathutil.Path {
 	// project.Path() must be defined, error could be ignored
 	path, _ := pathutil.NewPath(project.Path().String(), "LICENSE")
+	return path
+}
+
+func (project project) distGoTomlPath() pathutil.Path {
+	// project.Path() must be defined, error could be ignored
+	path, _ := pathutil.NewPath(project.Path().String(), "dist-go.toml")
 	return path
 }

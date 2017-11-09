@@ -43,7 +43,9 @@ func NewLib(projectName, author, license string) (err error) {
 	if err := proj.MakeDepFiles(); err != nil {
 		panic(err)
 	}
-	//proj.GenerateDistConf()
+	if err := proj.SaveConfig(); err != nil {
+		panic(err)
+	}
 	//proj.GenerateTravis()
 	//proj.GenerateAppVeyor()
 	proj.MakeLicenseFile()

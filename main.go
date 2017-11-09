@@ -10,6 +10,7 @@ dist-go has a bold assumption and convention like the followings:
 * VCS are git only (yet)
 * vendor dir is gitignored (vendor isn't commited - https://github.com/golang/dep/blob/master/docs/FAQ.md#should-i-commit-my-vendor-directory)
 * `-go` suffix in project name is ignored (package called without `-go` suffix)
+* run test with coverege (https://github.com/pierrre/gotestcover#deprecated)
 
 SYNOPSIS
 
