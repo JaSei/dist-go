@@ -9,21 +9,25 @@ func Test() error {
 	if err != nil {
 		return err
 	}
-	_ = proj.Path()
-	//proj.GenerateReadme()
+	//_ = proj.Path()
+	if err = proj.GenerateReadme(); err != nil {
+		return err
+	}
 	//proj.DepEnsure()
-	//proj.GoTestCover()
-
-	return nil
-}
-
-func DepEnsure() error {
-	if err := GoGet("github.com/golang/dep/cmd/dep"); err != nil {
-		return err
-	}
-	if err := Run("dep", "ensure", "-v"); err != nil {
+	if err = proj.GoTestCover(); err != nil {
 		return err
 	}
 
 	return nil
 }
+
+//func DepEnsure() error {
+//	if err := GoGet("github.com/golang/dep/cmd/dep"); err != nil {
+//		return err
+//	}
+//	if err := Run("dep", "ensure", "-v"); err != nil {
+//		return err
+//	}
+//
+//	return nil
+//}

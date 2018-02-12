@@ -20,6 +20,8 @@ type Project interface {
 	MakeLicenseFile() error
 	SaveConfig() error
 	LoadConfig() error
+	GoTestCover() error
+	GenerateReadme() error
 }
 
 // implementation
@@ -135,30 +137,42 @@ func (project project) CheckIntegrity() error {
 
 func (project project) gitignorePath() pathutil.Path {
 	// project.Path() must be defined, error could be ignored
-	path, _ := pathutil.NewPath(project.Path().String(), ".gitignore")
+	path, _ := pathutil.New(project.Path().String(), ".gitignore")
 	return path
 }
 
 func (project project) versionFilePath() pathutil.Path {
 	// project.Path() must be defined, error could be ignored
-	path, _ := pathutil.NewPath(project.Path().String(), "VERSION")
+	path, _ := pathutil.New(project.Path().String(), "VERSION")
 	return path
 }
 
 func (project project) depGopkgTomlPath() pathutil.Path {
 	// project.Path() must be defined, error could be ignored
-	path, _ := pathutil.NewPath(project.Path().String(), "Gopkg.toml")
+	path, _ := pathutil.New(project.Path().String(), "Gopkg.toml")
 	return path
 }
 
 func (project project) licensePath() pathutil.Path {
 	// project.Path() must be defined, error could be ignored
-	path, _ := pathutil.NewPath(project.Path().String(), "LICENSE")
+	path, _ := pathutil.New(project.Path().String(), "LICENSE")
 	return path
 }
 
 func (project project) distGoTomlPath() pathutil.Path {
 	// project.Path() must be defined, error could be ignored
-	path, _ := pathutil.NewPath(project.Path().String(), "dist-go.toml")
+	path, _ := pathutil.New(project.Path().String(), "dist-go.toml")
+	return path
+}
+
+func (project project) goDocDownTmplPath() pathutil.Path {
+	// project.Path() must be defined, error could be ignored
+	path, _ := pathutil.New(project.Path().String(), ".godocdown.tmpl")
+	return path
+}
+
+func (project project) readmePath() pathutil.Path {
+	// project.Path() must be defined, error could be ignored
+	path, _ := pathutil.New(project.Path().String(), "README.md")
 	return path
 }

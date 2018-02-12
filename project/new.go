@@ -46,7 +46,7 @@ func (project project) MakeExampleLib() error {
 		pkg = pkg[0 : len(pkg)-3]
 	}
 
-	lib, err := pathutil.NewPath(project.Path().String(), pkg+".go")
+	lib, err := pathutil.New(project.Path().String(), pkg+".go")
 	if err != nil {
 		return errors.Wrapf(err, "MakeExampleLib(%s.go)", pkg)
 	}
@@ -55,7 +55,7 @@ func (project project) MakeExampleLib() error {
 		return errors.Wrapf(err, "MakeExampleLib(%s.go)", pkg)
 	}
 
-	test, err := pathutil.NewPath(project.Path().String(), pkg+"_test.go")
+	test, err := pathutil.New(project.Path().String(), pkg+"_test.go")
 	if err != nil {
 		return errors.Wrapf(err, "MakeExampleLib(%s_test.go)", pkg)
 	}

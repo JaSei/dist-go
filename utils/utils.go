@@ -8,7 +8,7 @@ import (
 )
 
 func GoSrcPath() (pathutil.Path, error) {
-	return pathutil.NewPath(os.Getenv("GOPATH"), "src")
+	return pathutil.New(os.Getenv("GOPATH"), "src")
 }
 
 func CheckGoPath() error {
@@ -20,5 +20,5 @@ func CheckGoPath() error {
 }
 
 func ProjectPath(projectName string) (pathutil.Path, error) {
-	return pathutil.NewPath(os.Getenv("GOPATH"), "src", projectName)
+	return pathutil.New(os.Getenv("GOPATH"), "src", projectName)
 }

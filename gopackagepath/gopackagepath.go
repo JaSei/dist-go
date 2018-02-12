@@ -25,9 +25,10 @@ type GoPackagePath interface {
 	Package() string
 	SubPackage() string
 	UserPackage() string
+	FullPackage() string
 }
 
-type gopackagepath struct {
+type GoPackagePathImpl struct {
 	repo        string
 	user        string
 	packageName string
@@ -42,7 +43,7 @@ func New(fullPackageName string) (GoPackagePath, error) {
 		return nil, errors.New("Invalid package name")
 	}
 
-	newPackageName := gopackagepath{
+	newPackageName := GoPackagePathImpl{
 		repo:        packageParts[0],
 		user:        packageParts[1],
 		packageName: packageParts[2],
@@ -56,26 +57,31 @@ func New(fullPackageName string) (GoPackagePath, error) {
 }
 
 // Repo return repo (first) part of full package name
-func (pkg gopackagepath) Repo() string {
+func (pkg GoPackagePathImpl) Repo() string {
 	return pkg.repo
 }
 
 // User return user (second) part of full package name
-func (pkg gopackagepath) User() string {
+func (pkg GoPackagePathImpl) User() string {
 	return pkg.user
 }
 
 // User return package (third) part of full package name
-func (pkg gopackagepath) Package() string {
+func (pkg GoPackagePathImpl) Package() string {
 	return pkg.packageName
 }
 
 // SubPackage return next levels (last) part of full package name
-func (pkg gopackagepath) SubPackage() string {
+func (pkg GoPackagePathImpl) SubPackage() string {
 	return pkg.subPackage
 }
 
 // UserPackage return user + package - should be be relative uniqiue identificator
-func (pkg gopackagepath) UserPackage() string {
+func (pkg GoPackagePathImpl) UserPackage() string {
 	return pkg.user + "/" + pkg.packageName
+}
+
+// FullPackage return repo + user + package
+func (pkg GoPackagePathImpl) FullPackage() string {
+	return pkg.repo + "/" + pkg.UserPackage()
 }
