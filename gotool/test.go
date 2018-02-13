@@ -5,6 +5,7 @@ import (
 	"os/exec"
 
 	"github.com/JaSei/pathutil-go"
+	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
 )
 
@@ -28,26 +29,29 @@ func GoTestCover(coveragePath pathutil.Path) error {
 		return errors.Wrap(err, "go list")
 	}
 
+	var result *multierror.Error
 	for _, dep := range depList {
-		_ = goTest(coveragePath, dep)
+		result = multierror.Append(result, goTest(coveragePath, dep))
 	}
 
-	return nil
+	return result.ErrorOrNil()
 }
 
 func goTest(coverprofile pathutil.Path, dep string) (err error) {
 	temp, err := pathutil.NewTempFile(pathutil.TempOpt{})
 	defer func() {
-		err = errors.Wrap(temp.Remove(), "remove temp file fail")
+		if errRemove := temp.Remove(); errRemove != nil {
+			err = errors.Wrap(errRemove, "remove temp file fail")
+		}
 	}()
 
 	out, err := exec.Command("go", "test", "-covermode=atomic", "-coverprofile="+temp.Canonpath(), dep).Output()
 
-	if err != nil {
-		return err
-	}
-
 	fmt.Print(string(out))
+
+	if err != nil {
+		return errors.Wrapf(err, "go test of %s failed", dep)
+	}
 
 	lines, err := temp.Lines()
 	if err != nil {

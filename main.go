@@ -30,6 +30,12 @@ new
 * cd to project dir
 * git init
 
+test
+
+* generate README.md
+* run go generate
+* run tests
+
 release
 
 * check version
@@ -65,10 +71,9 @@ I like `VERSION` file, bacause it's simple to do it, and works it well to app an
 package main
 
 import (
-	"log"
-
 	"github.com/JaSei/dist-go/dist"
 	"github.com/alecthomas/kingpin"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -92,6 +97,8 @@ var (
 )
 
 func main() {
+	log.SetLevel(log.DebugLevel)
+
 	switch kingpin.Parse() {
 	case newLib.FullCommand():
 		handleError(dist.NewLib(*newLibProjectName, *newAuthor, *newLicence))

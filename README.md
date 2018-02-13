@@ -35,6 +35,10 @@ https://github.com/golang/dep/blob/master/docs/FAQ.md#should-i-commit-my-vendor-
 
 * check project dir * cd to project dir * git init
 
+### test
+
+* generate README.md * run go generate * run tests
+
 ### release
 
 * check version * check dirty state of git (goreleaser don't release in dirty

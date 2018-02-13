@@ -9,11 +9,14 @@ func Test() error {
 	if err != nil {
 		return err
 	}
-	//_ = proj.Path()
+
 	if err = proj.GenerateReadme(); err != nil {
 		return err
 	}
+
 	//proj.DepEnsure()
+	//proj.GoGenerate()
+
 	if err = proj.GoTestCover(); err != nil {
 		return err
 	}
