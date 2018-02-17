@@ -8,10 +8,12 @@ import (
 	"github.com/blang/semver"
 )
 
+var command = []string{"version"}
+
 // GoVersion function return version of your go like `go version`
 // this method use `go version` command and semver parser
 func GoVersion() (*semver.Version, error) {
-	outBytes, err := exec.Command("go", "version").Output()
+	outBytes, err := exec.Command("go", command...).Output()
 	if err != nil {
 		return nil, err
 	}
