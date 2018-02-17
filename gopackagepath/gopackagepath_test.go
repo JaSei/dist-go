@@ -25,6 +25,4 @@ func TestNew(t *testing.T) {
 	gpp, err = New("github.com/JaSei/test/testify/assert")
 	assert.NoError(t, err)
 	assert.Equal(t, "testify/assert", gpp.SubPackage())
-
-	assert.Fail(t, "test")
 }
